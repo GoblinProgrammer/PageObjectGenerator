@@ -1,4 +1,4 @@
-import GUI.RightPanel;
+import gui.RightPanel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,7 +27,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/GUI/GUI.fxml"));
 
-        Scene scene = new Scene(root, 300, 275);
+        Scene scene = new Scene(root, 800, 800);
 
         stage.setTitle("FXML Welcome");
         stage.setScene(scene);
