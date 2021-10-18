@@ -3,17 +3,19 @@ package controller;
 import element.Element;
 import element.ElementType;
 import element.LocatorType;
+import gui.CustomContextMenu;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
+import java.beans.EventHandler;
 import java.util.ArrayList;
 
 public class Controller {
-    private ArrayList<Element> elementsList;
-
     //*WebView
     @FXML
     private WebView webView;
@@ -57,7 +59,12 @@ public class Controller {
     @FXML
     private ListView listOfElements;
 
-    public Controller(){ }
+    private ArrayList<Element> elementsList;
+    private CustomContextMenu customContextMenu;
+
+    public Controller(){
+        customContextMenu = new CustomContextMenu();
+    }
 
     @FXML
     private void initialize(){
@@ -120,5 +127,18 @@ public class Controller {
         webElementNameInput.clear();
         generateMethodsCheckbox.setSelected(false);
         showElementTypeChoiceBox();
+    }
+
+    @FXML
+    private void showCustomContextMenu(){
+        customContextMenu.setWebView(webView);
+
+        webView.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent me) ->{
+            if(me.getButton() == MouseButton.SECONDARY){
+                customContextMenu.testCreateContextMenu();
+            } else {
+                customContextMenu.hideCustomContextMenu();
+            }
+        });
     }
 }
