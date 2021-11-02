@@ -15,7 +15,7 @@
           fx:controller="controller.Controller">
 
     <WebView fx:id="webView"
-            GridPane.columnIndex="0" onMouseClicked="#showCustomContextMenu"/>
+            GridPane.columnIndex="0" onMouseClicked="#getAttributes"/>
 
     <!-- RightPanel -->
     <VBox GridPane.columnIndex="1"

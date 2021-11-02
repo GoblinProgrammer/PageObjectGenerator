@@ -11,8 +11,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import util.AttributeFinder;
 
-import java.beans.EventHandler;
 import java.util.ArrayList;
 
 public class Controller {
@@ -130,15 +130,21 @@ public class Controller {
     }
 
     @FXML
-    private void showCustomContextMenu(){
-        customContextMenu.setWebView(webView);
-
+    private void getAttributes(){
         webView.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent me) ->{
             if(me.getButton() == MouseButton.SECONDARY){
-                customContextMenu.testCreateContextMenu();
-            } else {
-                customContextMenu.hideCustomContextMenu();
+                AttributeFinder.getDataByCoordinates(this,webView);
             }
         });
+    }
+
+    @FXML
+    public void setByIdInputValue(String value){
+        byIdInput.setText(value);
+    }
+
+    @FXML
+    public void setByClassInputValue(String value){
+        byClassInput.setText(value);
     }
 }

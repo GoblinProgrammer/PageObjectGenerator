@@ -1,5 +1,9 @@
 package util;
 
+import controller.Controller;
+import javafx.scene.input.MouseButton;
+import javafx.scene.web.WebView;
+import netscape.javascript.JSObject;
 import org.w3c.dom.html.HTMLElement;
 
 import java.util.Optional;
@@ -7,6 +11,28 @@ import java.util.Optional;
 import static util.Cast.cast;
 
 public class AttributeFinder {
+    
+    public static void getDataByCoordinates(Controller controller, WebView webView){
+        webView.setOnMousePressed(e -> {
+            if (e.getButton() == MouseButton.SECONDARY) {
+                System.out.println("LOG: tagName: " + webView.getEngine().executeScript("document.elementFromPoint("
+                        + e.getX()
+                        + "," + e.getY() + ").tagName;"));
+                JSObject object = (JSObject) webView.getEngine().executeScript("document.elementFromPoint("
+                        + e.getX()
+                        + "," + e.getY() + ");");
+                cast(object, HTMLElement.class).ifPresent(htmlElement -> {
+                    //htmlElement.setAttribute();
+                    System.out.println("LOG: Html element class name: " + htmlElement.getClassName());
+                    controller.setByClassInputValue(htmlElement.getClassName());
+                });
+                cast(object, HTMLElement.class).ifPresent(htmlElement -> {
+                    System.out.println("LOG: Html element id: " + htmlElement.getId());
+                    controller.setByIdInputValue(htmlElement.getId());
+                });
+            }
+        });
+    }
 
     public Optional<String> resolveClosesId(HTMLElement element) {
         if (getId(element) != null) return Optional.of(getId(element));
