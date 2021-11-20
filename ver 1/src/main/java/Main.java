@@ -1,4 +1,3 @@
-import gui.CustomContextMenu;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,8 +20,6 @@ public class Main extends Application {
 
         stage.setTitle("PageObject Generator");
         stage.setScene(scene);
-
-        CustomContextMenu.disableDefaultContextMenu(stage);
 
         stage.show();
     }

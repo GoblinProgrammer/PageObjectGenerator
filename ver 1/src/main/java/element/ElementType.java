@@ -4,6 +4,7 @@ public enum ElementType {
     Input,
     Select,
     TextArea,
-    Checkbox
+    Checkbox,
+    Other
     ;
 }

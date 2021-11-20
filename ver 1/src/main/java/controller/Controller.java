@@ -3,30 +3,23 @@ package controller;
 import element.Element;
 import element.ElementType;
 import element.LocatorType;
-import gui.CustomContextMenu;
+import file.FileHandler;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import util.AttributeFinder;
+import languange.Languange;
+import pageObject.JavaPageObjectClass;
+import pageObject.PageObjectClass;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Controller {
-    //*WebView
-    @FXML
-    private WebView webView;
 
-    //*Right Panel
     //**Source Code
     @FXML
     private TextField urlInput;
-
-    @FXML
-    private TextField sourceCodeInput;
 
     //**ElementDescription
     @FXML
@@ -46,8 +39,6 @@ public class Controller {
     @FXML
     private TextField byIdInput;
     @FXML
-    private TextField byClassInput;
-    @FXML
     private TextField byCssSelectorInput;
     @FXML
     private TextField byXPathInput;
@@ -58,34 +49,28 @@ public class Controller {
     //**List Of elements
     @FXML
     private ListView listOfElements;
+    @FXML
+    private ChoiceBox languangeChoiceBox;
+    @FXML
+    private TextField className;
 
-    private ArrayList<Element> elementsList;
-    private CustomContextMenu customContextMenu;
+    PageObjectClass pageObjectClass;
 
-    public Controller(){
-        customContextMenu = new CustomContextMenu();
-    }
+    private List<Element> elementsList;
+
+    public Controller(){ }
 
     @FXML
     private void initialize(){
         elementTypeChoiceBox.setItems(FXCollections.observableArrayList(ElementType.values()));
         elementLocatorTypeChoiceBox.setItems(FXCollections.observableArrayList(LocatorType.values()));
+        languangeChoiceBox.setItems(FXCollections.observableArrayList(Arrays.asList(Languange.JAVA,Languange.CSHARP,Languange.KOTLIN)));
 
         elementTypeChoiceBox.setVisible(false);
         elementTypeChoiceBoxLabel.setVisible(false);
 
         elementsList = new ArrayList<>();
         loadElementsOnList();
-    }
-
-    @FXML
-    private void loadUrlIntoWebView(){
-        WebEngine webEngine = webView.getEngine();
-        if(!urlInput.getText().isBlank()){
-            webEngine.load(urlInput.getText());
-        } else if(!sourceCodeInput.getText().isBlank()){
-            webEngine.load(sourceCodeInput.getText());
-        }
     }
 
     @FXML
@@ -100,15 +85,11 @@ public class Controller {
         String locator;
         if(locatorType.equals(LocatorType.Id)){
             locator = byIdInput.getText();
-        } else if(locatorType.equals(LocatorType.Class)){
-            locator = byClassInput.getText();
-        } else if(locatorType.equals(LocatorType.Css)){
-            locator = byCssSelectorInput.getText();
         } else {
             locator = byXPathInput.getText();
         }
 
-        elementsList.add(new Element(locator,webElementNameInput.getText(),generateMethodsCheckbox.isSelected(), (ElementType) elementTypeChoiceBox.getValue()));
+        elementsList.add(new Element(locatorType,locator,webElementNameInput.getText(),generateMethodsCheckbox.isSelected(), (ElementType) elementTypeChoiceBox.getValue()));
         clearElementForm();
         loadElementsOnList();
     }
@@ -130,21 +111,16 @@ public class Controller {
     }
 
     @FXML
-    private void getAttributes(){
-        webView.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent me) ->{
-            if(me.getButton() == MouseButton.SECONDARY){
-                AttributeFinder.getDataByCoordinates(this,webView);
-            }
-        });
-    }
+    public void savePageObject(){
+        if(languangeChoiceBox.equals(Languange.JAVA)){
+            pageObjectClass = new JavaPageObjectClass(className.getText(),urlInput.getText());
+            pageObjectClass.setPageObjectElements(elementsList);
+        }
 
-    @FXML
-    public void setByIdInputValue(String value){
-        byIdInput.setText(value);
-    }
-
-    @FXML
-    public void setByClassInputValue(String value){
-        byClassInput.setText(value);
+        if(className.getText() != ""){
+            FileHandler.saveToFile(className.getText(),pageObjectClass.printClass());
+        } else {
+            // TODO: 19.11.2021
+        }
     }
 }
