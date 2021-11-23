@@ -17,7 +17,7 @@ public class JavaPageObjectElement extends PageObjectElement implements IPageObj
 
     @Override
     public void setElementLocatorAttribute(){
-        elementLocatorAttribute = "String " + elementLocatorName + " = " + locator + ";\n";
+        elementLocatorAttribute = "private static final String " + elementLocatorName + " = \"" + locator + "\";\n";
     }
 
     @Override

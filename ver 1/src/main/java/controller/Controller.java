@@ -37,11 +37,7 @@ public class Controller {
 
     //**Element Locator
     @FXML
-    private TextField byIdInput;
-    @FXML
-    private TextField byCssSelectorInput;
-    @FXML
-    private TextField byXPathInput;
+    private TextField locatorInput;
 
     @FXML
     private ChoiceBox elementLocatorTypeChoiceBox;
@@ -52,9 +48,9 @@ public class Controller {
     @FXML
     private ChoiceBox languangeChoiceBox;
     @FXML
-    private TextField className;
+    private TextField classNameInput;
 
-    PageObjectClass pageObjectClass;
+    JavaPageObjectClass pageObjectClass;
 
     private List<Element> elementsList;
 
@@ -82,14 +78,8 @@ public class Controller {
     @FXML
     private void addElementToList(){
         LocatorType locatorType = (LocatorType) elementLocatorTypeChoiceBox.getValue();
-        String locator;
-        if(locatorType.equals(LocatorType.Id)){
-            locator = byIdInput.getText();
-        } else {
-            locator = byXPathInput.getText();
-        }
 
-        elementsList.add(new Element(locatorType,locator,webElementNameInput.getText(),generateMethodsCheckbox.isSelected(), (ElementType) elementTypeChoiceBox.getValue()));
+        elementsList.add(new Element(locatorType,locatorInput.getText(),webElementNameInput.getText(),generateMethodsCheckbox.isSelected(), (ElementType) elementTypeChoiceBox.getValue()));
         clearElementForm();
         loadElementsOnList();
     }
@@ -112,15 +102,12 @@ public class Controller {
 
     @FXML
     public void savePageObject(){
-        if(languangeChoiceBox.equals(Languange.JAVA)){
-            pageObjectClass = new JavaPageObjectClass(className.getText(),urlInput.getText());
-            pageObjectClass.setPageObjectElements(elementsList);
-        }
+        pageObjectClass = new JavaPageObjectClass(classNameInput.getText(),urlInput.getText());
+        pageObjectClass.setPageObjectElements(elementsList);
 
-        if(className.getText() != ""){
-            FileHandler.saveToFile(className.getText(),pageObjectClass.printClass());
-        } else {
-            // TODO: 19.11.2021
-        }
+        System.out.println(pageObjectClass.printClass());
+
+            FileHandler.saveToFile(classNameInput.getText(),pageObjectClass.printClass(),"java");
+
     }
 }

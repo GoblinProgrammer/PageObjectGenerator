@@ -1,7 +1,7 @@
 package element;
 
 public enum LocatorType {
-    Id,
-    Class,
-    Xpath;
+    id,
+    css,
+    xpath;
 }

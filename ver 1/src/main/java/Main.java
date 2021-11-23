@@ -16,7 +16,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/GUI/GUI.fxml")));
 
-        Scene scene = new Scene(root, 800, 800);
+        Scene scene = new Scene(root, 600, 600);
 
         stage.setTitle("PageObject Generator");
         stage.setScene(scene);

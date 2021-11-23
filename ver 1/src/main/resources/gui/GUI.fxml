@@ -19,7 +19,7 @@
         <GridPane hgap="10" vgap="10" GridPane.rowIndex="0">
             <GridPane hgap="10" vgap="10" GridPane.rowIndex="0">
                 <Label text="Class name:" GridPane.columnIndex="0"/>
-                <TextField fx:id="className" GridPane.columnIndex="1"/>
+                <TextField fx:id="classNameInput" GridPane.columnIndex="1"/>
             </GridPane>
             <GridPane hgap="10" vgap="10" GridPane.rowIndex="1">
                 <Label text="Url:"
@@ -43,20 +43,11 @@
 
         <!-- ElementLocator -->
         <GridPane hgap="10" vgap="10" GridPane.rowIndex="2">
-            <Label text="by Id"
-                   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="byIdInput" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="Locator" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="locatorInput" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-            <Label text="by CSS selector"
-                   GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="byCssSelectorInput" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-
-            <Label text="by XPath"
-                   GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="byXPathInput" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-
-            <Label text="Choose locator type:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <ChoiceBox fx:id="elementLocatorTypeChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Label text="Choose locator type:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <ChoiceBox fx:id="elementLocatorTypeChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
             <Button fx:id="addElementToListButton" GridPane.columnIndex="1" GridPane.rowIndex="5" text="Add element" onAction="#addElementToList"/>
         </GridPane>

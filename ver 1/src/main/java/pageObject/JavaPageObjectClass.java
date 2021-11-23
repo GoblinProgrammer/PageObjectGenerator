@@ -2,8 +2,8 @@ package pageObject;
 
 
 import element.Element;
-import element.ElementType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JavaPageObjectClass extends PageObjectClass implements IPageObjectClass {
@@ -14,16 +14,23 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
 
     @Override
     public void setPageObjectElements(List<Element> pageElements){
-        this.pageObjectElements = null;
+        this.pageObjectElements = new ArrayList<>();
         for (Element element : pageElements){
             pageObjectElements.add(new JavaPageObjectElement(element.getName(),element.getLocator(),element.getLocatorType(),element.getElementType()));
         }
     }
 
     @Override
+    public String printImports(){
+        return "import org.openqa.selenium.WebDriver;\n" +
+                "import org.openqa.selenium.WebElement;\n" +
+                "import org.openqa.selenium.support.FindBy;\n\n";
+    }
+
+    @Override
     public String printConstructor(){
         String constructor;
-        constructor = "public " + className + "(){}\n";
+        constructor = "public " + className + "(){}\n\n";
 
         return constructor;
     }
@@ -32,7 +39,7 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
     public String printGet(){
         String get;
         get = "public void get(WebDriver driver){\n" +
-                    "driver.get(" + pageUrl + ");\n" +
+                    "   driver.get(\"" + pageUrl + "\");\n" +
                 "}\n";
 
         return get;
@@ -44,7 +51,7 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
         for(PageObjectElement element : pageObjectElements){
             elementsLocators += element.printElementLocator();
         }
-        return elementsLocators;
+        return elementsLocators + "\n";
     }
 
     @Override
@@ -53,11 +60,26 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
         for(PageObjectElement element : pageObjectElements){
             elementsFindBys += element.printElementFindBy();
         }
-        return elementsFindBys;
+
+        return elementsFindBys + "\n";
+    }
+
+    @Override
+    public String printMethods(){
+
+        return printGet() + "\n";
+    }
+
+    @Override
+    public String printClassBody(){
+        return printElementsLocatorsAttributes() + printElementsFindBys() + printConstructor() + printMethods() + "\n";
     }
 
     @Override
     public String printClass(){
-        return null;
+        return  printImports() +
+                "public class " + className + "{\n" +
+                printClassBody() +
+                "\n}";
     }
 }
