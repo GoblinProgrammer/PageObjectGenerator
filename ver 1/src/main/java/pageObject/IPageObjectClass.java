@@ -10,6 +10,7 @@ public interface IPageObjectClass {
     String printGet();
     String printElementsLocatorsAttributes();
     String printElementsFindBys();
+    String printElementsMethods();
     String printMethods();
     String printClassBody();
     String printClass();

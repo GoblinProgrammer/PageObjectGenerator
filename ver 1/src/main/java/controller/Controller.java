@@ -8,12 +8,16 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import languange.Languange;
+import pageObject.CSharpPageObjectClass;
 import pageObject.JavaPageObjectClass;
+import pageObject.KotlinPageObjectClass;
 import pageObject.PageObjectClass;
+import seleniumHelper.SeleniumHelperJava;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Controller {
 
@@ -49,6 +53,9 @@ public class Controller {
     private ChoiceBox languangeChoiceBox;
     @FXML
     private TextField classNameInput;
+    
+    @FXML
+    private CheckBox generateSeleniumHelperCheckbox; // TODO: 26.11.2021  decide to generate additional file with handlers or not 
 
     JavaPageObjectClass pageObjectClass;
 
@@ -96,18 +103,38 @@ public class Controller {
     @FXML
     private void clearElementForm(){
         webElementNameInput.clear();
+        locatorInput.clear();
         generateMethodsCheckbox.setSelected(false);
+        //elementTypeChoiceBox.setValue(); todo dechoose on choicebox
+        //elementLocatorTypeChoiceBox.setValue(); todo dechoose on choicebox
         showElementTypeChoiceBox();
     }
 
     @FXML
+    private void clearForm(){
+        clearElementForm();
+        classNameInput.clear();
+        urlInput.clear();
+        elementsList = new ArrayList<>();
+        loadElementsOnList();
+        generateSeleniumHelperCheckbox.setSelected(false);
+    }
+
+    @FXML
     public void savePageObject(){
-        pageObjectClass = new JavaPageObjectClass(classNameInput.getText(),urlInput.getText());
+        // TODO: 26.11.2021 make it prettier 
+        if(languangeChoiceBox.getValue().equals(Languange.JAVA)) {
+            savePageObjectToFileWihtGivenClassAndFilExtention(new JavaPageObjectClass(classNameInput.getText(),urlInput.getText(),generateMethodsCheckbox.isSelected()),"java");
+        } else if(languangeChoiceBox.getValue().equals(Languange.CSHARP)){
+            savePageObjectToFileWihtGivenClassAndFilExtention(new CSharpPageObjectClass(classNameInput.getText(),urlInput.getText(),generateMethodsCheckbox.isSelected()),"cs");
+        } else if(languangeChoiceBox.getValue().equals(Languange.KOTLIN)){
+            savePageObjectToFileWihtGivenClassAndFilExtention(new KotlinPageObjectClass(classNameInput.getText(),urlInput.getText(),generateMethodsCheckbox.isSelected()),"kt");
+        }
+    }
+
+    private void savePageObjectToFileWihtGivenClassAndFilExtention(PageObjectClass pageObjectClass, String fileExtention){
         pageObjectClass.setPageObjectElements(elementsList);
-
-        System.out.println(pageObjectClass.printClass());
-
-            FileHandler.saveToFile(classNameInput.getText(),pageObjectClass.printClass(),"java");
-
+        FileHandler.saveToFile(classNameInput.getText(), pageObjectClass.printClass(), fileExtention);
+        clearForm();
     }
 }

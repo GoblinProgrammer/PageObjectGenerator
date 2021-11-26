@@ -24,10 +24,3 @@ public class Main extends Application {
         stage.show();
     }
 }
-
-//poszukaj po id
-//poszukaj po klasie
-//poszukaj po css - opcjonalnie
-// wpisz css/xpath z palca
-// pozwol userowi wybrać opcje, ale zaproponuj domyślne na podstawie prostego algorytmu id/klasa,
-// wystarczy isc do gory po elementach DOM

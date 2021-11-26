@@ -58,8 +58,10 @@
         <Label text="Already added elements " GridPane.rowIndex="0"/>
         <ListView fx:id="listOfElements" GridPane.rowIndex="1"/>
         <GridPane hgap="10" vgap="10" GridPane.rowIndex="2">
-            <Label text="Choose languange" GridPane.columnIndex="0"/>
-            <ChoiceBox fx:id="languangeChoiceBox" GridPane.columnIndex="1"/>
+            <Label text="Generate additional control handle class" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <CheckBox fx:id="generateSeleniumHelperCheckbox" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="Choose languange" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <ChoiceBox fx:id="languangeChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
         </GridPane>
         <Button fx:id="saveButton" GridPane.columnIndex="0" GridPane.rowIndex="4" text="Save" onAction="#savePageObject"/>
     </GridPane>

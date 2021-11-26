@@ -4,17 +4,10 @@ import element.Element;
 
 import java.util.List;
 
-public class PageObjectClass implements IPageObjectClass{
-    String className;
-    String pageUrl;
-    boolean generateMethods;
+public class CSharpPageObjectClass extends PageObjectClass implements IPageObjectClass{
 
-    List<PageObjectElement> pageObjectElements;
-
-    public PageObjectClass(String className, String pageUrl,boolean generateMethods){
-        this.className = className;
-        this.pageUrl = pageUrl;
-        this.generateMethods = generateMethods; // TODO: 26.11.2021 decide where generate methods should be - per element or per class 
+    public CSharpPageObjectClass(String className, String pageUrl,boolean generateMethods) {
+        super(className, pageUrl,generateMethods);
     }
 
     @Override
@@ -39,11 +32,6 @@ public class PageObjectClass implements IPageObjectClass{
 
     @Override
     public String printElementsFindBys() {
-        return null;
-    }
-
-    @Override
-    public String printElementsMethods(){
         return null;
     }
 

@@ -1,11 +1,10 @@
 package pageObject;
 
-import element.Element;
 import element.ElementType;
 import element.LocatorType;
 
 public class PageObjectElement implements IPageObjectElement{
-    String name;
+    String elementName;
     String locator;
     LocatorType locatorType;
 
@@ -15,12 +14,15 @@ public class PageObjectElement implements IPageObjectElement{
 
     String elementLocatorAttribute;
     String elementFindBy;
+    String elementHandleMethod;
 
-    public PageObjectElement(String name, String locator, LocatorType locatorType,ElementType elementType){
-        this.name = name;
+    public PageObjectElement(String elementName, String locator, LocatorType locatorType, ElementType elementType){
+        this.elementName = elementName;
         this.locator = locator;
         this.locatorType = locatorType;
         this.elementType = elementType;
+
+        elementLocatorName = elementName + "Locator";
     }
 
     @Override
@@ -34,6 +36,9 @@ public class PageObjectElement implements IPageObjectElement{
     }
 
     @Override
+    public void setElementHandleMethod(){}
+
+    @Override
     public String printElementLocator(){
         return elementLocatorAttribute;
     }
@@ -42,4 +47,7 @@ public class PageObjectElement implements IPageObjectElement{
     public String printElementFindBy(){
         return elementFindBy;
     }
+
+    @Override
+    public String printElementHandleMethod() { return elementHandleMethod; }
 }

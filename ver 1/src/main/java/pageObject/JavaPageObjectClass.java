@@ -8,8 +8,8 @@ import java.util.List;
 
 public class JavaPageObjectClass extends PageObjectClass implements IPageObjectClass {
 
-    public JavaPageObjectClass(String className, String pageUrl){
-        super(className,pageUrl);
+    public JavaPageObjectClass(String className, String pageUrl,boolean generateMethods){
+        super(className,pageUrl,generateMethods);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
     @Override
     public String printConstructor(){
         String constructor;
-        constructor = "public " + className + "(){}\n\n";
+        constructor = "\tpublic " + className + "(){}\n\n";
 
         return constructor;
     }
@@ -38,9 +38,9 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
     @Override
     public String printGet(){
         String get;
-        get = "public void get(WebDriver driver){\n" +
-                    "   driver.get(\"" + pageUrl + "\");\n" +
-                "}\n";
+        get = "\tpublic void get(WebDriver driver){\n" +
+                    "\t\tdriver.get(\"" + pageUrl + "\");\n" +
+                "\t}\n";
 
         return get;
     }
@@ -65,6 +65,15 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
     }
 
     @Override
+    public String printElementsMethods(){
+        String elementsMethods = "";
+        for(PageObjectElement element : pageObjectElements){
+            elementsMethods += element.printElementHandleMethod();
+        }
+        return elementsMethods;
+    }
+
+    @Override
     public String printMethods(){
 
         return printGet() + "\n";
@@ -72,7 +81,7 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
 
     @Override
     public String printClassBody(){
-        return printElementsLocatorsAttributes() + printElementsFindBys() + printConstructor() + printMethods() + "\n";
+        return printElementsLocatorsAttributes() + printElementsFindBys() + printConstructor() + printGet() + printElementsMethods() + "\n";
     }
 
     @Override
