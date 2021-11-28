@@ -6,9 +6,6 @@ import element.LocatorType;
 public class CSharpPageObjectElement extends PageObjectElement implements IPageObjectElement{
     public CSharpPageObjectElement(String name, String locator, LocatorType locatorType, ElementType elementType, boolean generateMethod) {
         super(name, locator, locatorType, elementType,generateMethod);
-
-        setElementLocatorAttribute();
-        setElementFindBy();
     }
 
     @Override

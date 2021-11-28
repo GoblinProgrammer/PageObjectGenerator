@@ -123,6 +123,9 @@ public class Controller {
         } else if(languangeChoiceBox.getValue().equals(Languange.CSHARP)){
             pageObjectClass = new CSharpPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
             fileExtention = "cs";
+        } else if(languangeChoiceBox.getValue().equals(Languange.KOTLIN)){
+            pageObjectClass = new KotlinPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+            fileExtention = "kt";
         }
 
         System.out.println(pageObjectClass.printClass());
