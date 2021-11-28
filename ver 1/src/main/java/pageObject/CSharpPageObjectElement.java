@@ -13,19 +13,21 @@ public class CSharpPageObjectElement extends PageObjectElement implements IPageO
 
     @Override
     public void setElementLocatorAttribute(){
-        elementLocatorAttribute = "   private static string " + elementLocatorName + " = \"" + locator + "\";\n";
+        elementLocatorAttribute = "\tprivate static string " + elementLocatorName + " = \"" + locator + "\";\n";
     }
 
     @Override
     public void setElementFindBy(){
-        elementFindBy = "   @FindBy(" + locatorType + " = " + elementLocatorName + ")\n" +
-                "   private WebElement " + elementName + ";\n";
+        elementFindBy = "\t[FindBy(How = How." + locatorType + ", Using = " + elementLocatorName + ")\n" +
+                "\t[CacheLookup]\n" +
+                "\tprivate IWebElement " + elementName + ";\n\n";
     }
 
     @Override
     public void setElementHandleMethod(){
-        elementHandleMethod = "   private void set" + elementLocatorName + elementType + "(string value){\n" +
-                "      System.out.println(\"INFO: Seting input \" + " + elementLocatorName + " + \" with value\" + value);" +
-                "      ";
+        elementHandleMethod = "\tprivate void set" + elementLocatorName + elementType + "(string value){\n" +
+                "\t\tConsole.WriteLine(\"INFO: Seting input \" + " + elementLocatorName + " + \" with value\" + value);\n" +
+                "\t\tSeleniumHelper.set" + elementType + "(" + elementName + ",value);\n" +
+                "\t}\n\n";
     }
 }

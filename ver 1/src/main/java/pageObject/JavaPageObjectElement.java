@@ -17,7 +17,7 @@ public class JavaPageObjectElement extends PageObjectElement implements IPageObj
     @Override
     public void setElementFindBy(){
         elementFindBy = "\t@FindBy(" + locatorType + " = " + elementLocatorName + ")\n" +
-                        "\tprivate WebElement " + elementName + ";\n";
+                        "\tprivate WebElement " + elementName + ";\n\n";
     }
 
     @Override
@@ -25,6 +25,6 @@ public class JavaPageObjectElement extends PageObjectElement implements IPageObj
         elementHandleMethod = "\tprivate void set" + elementLocatorName + elementType + "(String value){\n" +
                               "\t\tSystem.out.println(\"INFO: Setting " + elementName + " with value\" + value);\n" +
                               "\t\tSeleniumHelper.set" + elementType + "(" + elementName + ",value);\n" +
-                              "\t}\n";
+                              "\t}\n\n";
     }
 }

@@ -46,47 +46,6 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
     }
 
     @Override
-    public String printElementsLocatorsAttributes(){
-        String elementsLocators = "";
-        for(IPageObjectElement element : pageObjectElements){
-            elementsLocators += element.printElementLocator();
-        }
-        return elementsLocators + "\n";
-    }
-
-    @Override
-    public String printElementsFindBys(){
-        String elementsFindBys = "";
-        for(IPageObjectElement element : pageObjectElements){
-            elementsFindBys += element.printElementFindBy();
-        }
-
-        return elementsFindBys + "\n";
-    }
-
-    @Override
-    public String printElementsMethods(){
-        String elementsMethods = "";
-        for(IPageObjectElement element : pageObjectElements){
-            if(element.isMethodNeeded()){
-                elementsMethods += element.printElementHandleMethod();
-            }
-        }
-        return elementsMethods;
-    }
-
-    @Override
-    public String printMethods(){
-
-        return printGet() + "\n";
-    }
-
-    @Override
-    public String printClassBody(){
-        return printElementsLocatorsAttributes() + printElementsFindBys() + printConstructor() + printGet() + printElementsMethods() + "\n";
-    }
-
-    @Override
     public String printClass(){
         return  printImports() +
                 "public class " + className + "{\n" +

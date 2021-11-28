@@ -6,6 +6,7 @@ public enum ElementType {
     TextArea,
     Checkbox,
     RadioButton,
+    Button,
     Other
     ;
 }

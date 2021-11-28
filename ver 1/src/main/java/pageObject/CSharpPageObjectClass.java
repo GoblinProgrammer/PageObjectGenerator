@@ -2,6 +2,7 @@ package pageObject;
 
 import element.Element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CSharpPageObjectClass extends PageObjectClass implements IPageObjectClass{
@@ -11,50 +12,48 @@ public class CSharpPageObjectClass extends PageObjectClass implements IPageObjec
     }
 
     @Override
-    public String printImports() {
-        return null;
+    public void setPageObjectElements(List<Element> pageElements){
+        this.pageObjectElements = new ArrayList<>();
+        for (Element element : pageElements){
+            pageObjectElements.add(new CSharpPageObjectElement(element.getName(),element.getLocator(),element.getLocatorType(),element.getElementType(),element.getGenerateMethod()));
+        }
     }
 
     @Override
-    public String printConstructor() {
-        return null;
+    public String printImports(){
+        return "using System;\n" +
+                "using OpenQA.Selenium;\n" +
+                "using OpenQA.Selenium.Remote;\n" +
+                "using NUnit.Framework;\n" +
+                "using OpenQA.Selenium.Support.UI;\n" +
+                "// For supporting Page Object Model\n" +
+                "// Obsolete - using OpenQA.Selenium.Support.PageObjects;\n" +
+                "using SeleniumExtras.PageObjects;\n\n";
     }
 
     @Override
-    public String printGet() {
-        return null;
+    public String printConstructor(){
+        String constructor;
+        constructor = "\tpublic " + className + "(){}\n\n";
+
+        return constructor;
     }
 
     @Override
-    public String printElementsLocatorsAttributes() {
-        return null;
+    public String printGet(){
+        String get;
+        get = "\tpublic void get(IWebDriver driver){\n" +
+                "\t\tdriver.get(\"" + pageUrl + "\");\n" +
+                "\t}\n\n";
+
+        return get;
     }
 
     @Override
-    public String printElementsFindBys() {
-        return null;
-    }
-
-    @Override
-    public String printMethods() {
-        return null;
-    }
-
-    @Override
-    public String printElementsMethods() { return null; }
-
-    @Override
-    public String printClassBody() {
-        return null;
-    }
-
-    @Override
-    public String printClass() {
-        return null;
-    }
-
-    @Override
-    public void setPageObjectElements(List<Element> pageElements) {
-
+    public String printClass(){
+        return  printImports() +
+                "class " + className + "{\n" +
+                printClassBody() +
+                "\n}";
     }
 }

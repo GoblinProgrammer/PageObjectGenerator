@@ -34,19 +34,6 @@ public abstract class PageObjectElement implements IPageObjectElement{
     }
 
     @Override
-    public void setElementLocatorAttribute() {
-
-    }
-
-    @Override
-    public void setElementFindBy() {
-
-    }
-
-    @Override
-    public void setElementHandleMethod(){}
-
-    @Override
     public String printElementLocator(){
         return elementLocatorAttribute;
     }
