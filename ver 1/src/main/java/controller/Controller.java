@@ -8,16 +8,11 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import languange.Languange;
-import pageObject.CSharpPageObjectClass;
-import pageObject.JavaPageObjectClass;
-import pageObject.KotlinPageObjectClass;
-import pageObject.PageObjectClass;
-import seleniumHelper.SeleniumHelperJava;
+import pageObject.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class Controller {
 
@@ -30,14 +25,12 @@ public class Controller {
     private TextField webElementNameInput;
 
     @FXML
-    private CheckBox generateMethodsCheckbox;
+    private CheckBox generateMethodCheckbox;
 
     @FXML
     private Label elementTypeChoiceBoxLabel;
     @FXML
     private ChoiceBox elementTypeChoiceBox;
-
-
 
     //**Element Locator
     @FXML
@@ -57,9 +50,10 @@ public class Controller {
     @FXML
     private CheckBox generateSeleniumHelperCheckbox; // TODO: 26.11.2021  decide to generate additional file with handlers or not 
 
-    JavaPageObjectClass pageObjectClass;
-
     private List<Element> elementsList;
+
+    private IPageObjectClass pageObjectClass;
+    private String fileExtention;
 
     public Controller(){ }
 
@@ -78,15 +72,15 @@ public class Controller {
 
     @FXML
     private void showElementTypeChoiceBox(){
-        elementTypeChoiceBox.setVisible(generateMethodsCheckbox.isSelected());
-        elementTypeChoiceBoxLabel.setVisible(generateMethodsCheckbox.isSelected());
+        elementTypeChoiceBox.setVisible(generateMethodCheckbox.isSelected());
+        elementTypeChoiceBoxLabel.setVisible(generateMethodCheckbox.isSelected());
     }
 
     @FXML
     private void addElementToList(){
         LocatorType locatorType = (LocatorType) elementLocatorTypeChoiceBox.getValue();
 
-        elementsList.add(new Element(locatorType,locatorInput.getText(),webElementNameInput.getText(),generateMethodsCheckbox.isSelected(), (ElementType) elementTypeChoiceBox.getValue()));
+        elementsList.add(new Element(locatorType,locatorInput.getText(),webElementNameInput.getText(), generateMethodCheckbox.isSelected(), (ElementType) elementTypeChoiceBox.getValue()));
         clearElementForm();
         loadElementsOnList();
     }
@@ -104,7 +98,7 @@ public class Controller {
     private void clearElementForm(){
         webElementNameInput.clear();
         locatorInput.clear();
-        generateMethodsCheckbox.setSelected(false);
+        generateMethodCheckbox.setSelected(false);
         //elementTypeChoiceBox.setValue(); todo dechoose on choicebox
         //elementLocatorTypeChoiceBox.setValue(); todo dechoose on choicebox
         showElementTypeChoiceBox();
@@ -124,15 +118,14 @@ public class Controller {
     public void savePageObject(){
         // TODO: 26.11.2021 make it prettier 
         if(languangeChoiceBox.getValue().equals(Languange.JAVA)) {
-            savePageObjectToFileWihtGivenClassAndFilExtention(new JavaPageObjectClass(classNameInput.getText(),urlInput.getText(),generateMethodsCheckbox.isSelected()),"java");
+            pageObjectClass = new JavaPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+            fileExtention = "java";
         } else if(languangeChoiceBox.getValue().equals(Languange.CSHARP)){
-            savePageObjectToFileWihtGivenClassAndFilExtention(new CSharpPageObjectClass(classNameInput.getText(),urlInput.getText(),generateMethodsCheckbox.isSelected()),"cs");
-        } else if(languangeChoiceBox.getValue().equals(Languange.KOTLIN)){
-            savePageObjectToFileWihtGivenClassAndFilExtention(new KotlinPageObjectClass(classNameInput.getText(),urlInput.getText(),generateMethodsCheckbox.isSelected()),"kt");
+            pageObjectClass = new CSharpPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+            fileExtention = "cs";
         }
-    }
 
-    private void savePageObjectToFileWihtGivenClassAndFilExtention(PageObjectClass pageObjectClass, String fileExtention){
+        System.out.println(pageObjectClass.printClass());
         pageObjectClass.setPageObjectElements(elementsList);
         FileHandler.saveToFile(classNameInput.getText(), pageObjectClass.printClass(), fileExtention);
         clearForm();

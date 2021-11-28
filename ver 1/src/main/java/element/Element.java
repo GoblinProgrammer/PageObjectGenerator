@@ -5,12 +5,14 @@ public class Element {
     private LocatorType locatorType;
     private ElementType elementType;
     private String name;
+    private boolean generateMethod;
 
-    public Element(LocatorType locatorType,String locator,String name,boolean generateMethods,ElementType elementType){
+    public Element(LocatorType locatorType,String locator,String name,boolean generateMethod,ElementType elementType){
         this.locatorType = locatorType;
         this.locator = locator;
         this.name = name;
         this.elementType = elementType;
+        this.generateMethod = generateMethod;
     }
 
     public String getName() {
@@ -28,4 +30,6 @@ public class Element {
     public ElementType getElementType(){
         return elementType;
     }
+
+    public boolean getGenerateMethod() { return  generateMethod; }
 }

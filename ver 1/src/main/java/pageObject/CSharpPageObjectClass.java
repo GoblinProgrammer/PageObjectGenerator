@@ -6,8 +6,8 @@ import java.util.List;
 
 public class CSharpPageObjectClass extends PageObjectClass implements IPageObjectClass{
 
-    public CSharpPageObjectClass(String className, String pageUrl,boolean generateMethods) {
-        super(className, pageUrl,generateMethods);
+    public CSharpPageObjectClass(String className, String pageUrl,List<Element> pageElements) {
+        super(className, pageUrl,pageElements);
     }
 
     @Override
@@ -39,6 +39,9 @@ public class CSharpPageObjectClass extends PageObjectClass implements IPageObjec
     public String printMethods() {
         return null;
     }
+
+    @Override
+    public String printElementsMethods() { return null; }
 
     @Override
     public String printClassBody() {

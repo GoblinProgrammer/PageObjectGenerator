@@ -35,7 +35,7 @@
             <TextField fx:id="webElementNameInput"
                 GridPane.columnIndex="1" GridPane.rowIndex="0"/>
             <Label text="Generate Methods" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <CheckBox fx:id="generateMethodsCheckbox" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#showElementTypeChoiceBox"/>
+            <CheckBox fx:id="generateMethodCheckbox" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#showElementTypeChoiceBox"/>
             <Label fx:id="elementTypeChoiceBoxLabel" text="Select Element Type"
                    GridPane.columnIndex="0" GridPane.rowIndex="2"/>
             <ChoiceBox fx:id="elementTypeChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="2" />

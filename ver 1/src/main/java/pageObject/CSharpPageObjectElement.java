@@ -4,8 +4,8 @@ import element.ElementType;
 import element.LocatorType;
 
 public class CSharpPageObjectElement extends PageObjectElement implements IPageObjectElement{
-    public CSharpPageObjectElement(String name, String locator, LocatorType locatorType, ElementType elementType) {
-        super(name, locator, locatorType, elementType);
+    public CSharpPageObjectElement(String name, String locator, LocatorType locatorType, ElementType elementType, boolean generateMethod) {
+        super(name, locator, locatorType, elementType,generateMethod);
 
         setElementLocatorAttribute();
         setElementFindBy();

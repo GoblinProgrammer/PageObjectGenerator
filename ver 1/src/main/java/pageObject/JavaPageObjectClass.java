@@ -8,15 +8,15 @@ import java.util.List;
 
 public class JavaPageObjectClass extends PageObjectClass implements IPageObjectClass {
 
-    public JavaPageObjectClass(String className, String pageUrl,boolean generateMethods){
-        super(className,pageUrl,generateMethods);
+    public JavaPageObjectClass(String className, String pageUrl,List<Element> pageElements){
+        super(className,pageUrl,pageElements);
     }
 
     @Override
     public void setPageObjectElements(List<Element> pageElements){
         this.pageObjectElements = new ArrayList<>();
         for (Element element : pageElements){
-            pageObjectElements.add(new JavaPageObjectElement(element.getName(),element.getLocator(),element.getLocatorType(),element.getElementType()));
+            pageObjectElements.add(new JavaPageObjectElement(element.getName(),element.getLocator(),element.getLocatorType(),element.getElementType(),element.getGenerateMethod()));
         }
     }
 
@@ -40,7 +40,7 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
         String get;
         get = "\tpublic void get(WebDriver driver){\n" +
                     "\t\tdriver.get(\"" + pageUrl + "\");\n" +
-                "\t}\n";
+                "\t}\n\n";
 
         return get;
     }
@@ -48,7 +48,7 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
     @Override
     public String printElementsLocatorsAttributes(){
         String elementsLocators = "";
-        for(PageObjectElement element : pageObjectElements){
+        for(IPageObjectElement element : pageObjectElements){
             elementsLocators += element.printElementLocator();
         }
         return elementsLocators + "\n";
@@ -57,7 +57,7 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
     @Override
     public String printElementsFindBys(){
         String elementsFindBys = "";
-        for(PageObjectElement element : pageObjectElements){
+        for(IPageObjectElement element : pageObjectElements){
             elementsFindBys += element.printElementFindBy();
         }
 
@@ -67,8 +67,10 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
     @Override
     public String printElementsMethods(){
         String elementsMethods = "";
-        for(PageObjectElement element : pageObjectElements){
-            elementsMethods += element.printElementHandleMethod();
+        for(IPageObjectElement element : pageObjectElements){
+            if(element.isMethodNeeded()){
+                elementsMethods += element.printElementHandleMethod();
+            }
         }
         return elementsMethods;
     }

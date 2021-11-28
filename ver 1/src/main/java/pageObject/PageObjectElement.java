@@ -3,12 +3,12 @@ package pageObject;
 import element.ElementType;
 import element.LocatorType;
 
-public class PageObjectElement implements IPageObjectElement{
+public abstract class PageObjectElement implements IPageObjectElement{
     String elementName;
     String locator;
     LocatorType locatorType;
-
     ElementType elementType;
+    boolean generateMethod;
 
     String elementLocatorName;
 
@@ -16,13 +16,21 @@ public class PageObjectElement implements IPageObjectElement{
     String elementFindBy;
     String elementHandleMethod;
 
-    public PageObjectElement(String elementName, String locator, LocatorType locatorType, ElementType elementType){
+    public PageObjectElement(String elementName, String locator, LocatorType locatorType, ElementType elementType, boolean generateMethod){
         this.elementName = elementName;
         this.locator = locator;
         this.locatorType = locatorType;
         this.elementType = elementType;
+        this.generateMethod = generateMethod;
 
         elementLocatorName = elementName + "Locator";
+
+
+        setElementLocatorAttribute();
+        setElementFindBy();
+        if(generateMethod){
+            setElementHandleMethod();
+        }
     }
 
     @Override
@@ -50,4 +58,7 @@ public class PageObjectElement implements IPageObjectElement{
 
     @Override
     public String printElementHandleMethod() { return elementHandleMethod; }
+
+    @Override
+    public boolean isMethodNeeded(){ return generateMethod; }
 }

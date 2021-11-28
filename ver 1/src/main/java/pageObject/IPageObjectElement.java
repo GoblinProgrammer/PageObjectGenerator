@@ -11,4 +11,6 @@ public interface IPageObjectElement {
     String printElementLocator();
     String printElementFindBy();
     String printElementHandleMethod();
+
+    boolean isMethodNeeded();
 }
