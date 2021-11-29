@@ -47,9 +47,6 @@ public class Controller {
     @FXML
     private TextField classNameInput;
 
-    @FXML
-    private CheckBox generateSeleniumHelperCheckbox; // TODO: 26.11.2021  decide to generate additional file with handlers or not
-
     private List<Element> elementsList;
 
     private IPageObjectClass pageObjectClass;
@@ -112,7 +109,6 @@ public class Controller {
         urlInput.clear();
         elementsList = new ArrayList<>();
         loadElementsOnList();
-        generateSeleniumHelperCheckbox.setSelected(false);
     }
 
     @FXML
