@@ -108,6 +108,7 @@ public class Controller {
         classNameInput.clear();
         urlInput.clear();
         elementsList = new ArrayList<>();
+        languangeChoiceBox.setValue(null);
         loadElementsOnList();
     }
 
