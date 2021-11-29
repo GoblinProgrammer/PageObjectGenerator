@@ -34,7 +34,11 @@ public class CSharpPageObjectClass extends PageObjectClass implements IPageObjec
     @Override
     public String printConstructor(){
         String constructor;
-        constructor = "\tpublic " + className + "(){}\n\n";
+        constructor = "\t private IWebDriver driver;\n" +
+                "\tpublic " + className + "(IWebDriver driver){\n" +
+                "\t\t this.driver = driver;\n" +
+                "\t\t PageFactory.InitElements(driver, this);\n" +
+                "\t}\n\n";
 
         return constructor;
     }
@@ -43,7 +47,7 @@ public class CSharpPageObjectClass extends PageObjectClass implements IPageObjec
     public String printGet(){
         String get;
         get = "\tpublic void get(IWebDriver driver){\n" +
-                "\t\tdriver.get(\"" + pageUrl + "\");\n" +
+                "\t\tdriver.Navigate.GoToUrl(\"" + pageUrl + "\");\n" +
                 "\t}\n\n";
 
         return get;
