@@ -46,9 +46,9 @@ public class Controller {
     private ChoiceBox languangeChoiceBox;
     @FXML
     private TextField classNameInput;
-    
+
     @FXML
-    private CheckBox generateSeleniumHelperCheckbox; // TODO: 26.11.2021  decide to generate additional file with handlers or not 
+    private CheckBox generateSeleniumHelperCheckbox; // TODO: 26.11.2021  decide to generate additional file with handlers or not
 
     private List<Element> elementsList;
 
@@ -78,11 +78,12 @@ public class Controller {
 
     @FXML
     private void addElementToList(){
-        LocatorType locatorType = (LocatorType) elementLocatorTypeChoiceBox.getValue();
-
-        elementsList.add(new Element(locatorType,locatorInput.getText(),webElementNameInput.getText(), generateMethodCheckbox.isSelected(), (ElementType) elementTypeChoiceBox.getValue()));
-        clearElementForm();
-        loadElementsOnList();
+        if(validatePageObjectElementForm()){
+            LocatorType locatorType = (LocatorType) elementLocatorTypeChoiceBox.getValue();
+            elementsList.add(new Element(locatorType,locatorInput.getText(),webElementNameInput.getText(), generateMethodCheckbox.isSelected(), (ElementType) elementTypeChoiceBox.getValue()));
+            clearElementForm();
+            loadElementsOnList();
+        }
     }
 
     @FXML
@@ -99,8 +100,8 @@ public class Controller {
         webElementNameInput.clear();
         locatorInput.clear();
         generateMethodCheckbox.setSelected(false);
-        //elementTypeChoiceBox.setValue(); todo dechoose on choicebox
-        //elementLocatorTypeChoiceBox.setValue(); todo dechoose on choicebox
+        elementTypeChoiceBox.setValue(null);
+        elementLocatorTypeChoiceBox.setValue(null);
         showElementTypeChoiceBox();
     }
 
@@ -116,21 +117,51 @@ public class Controller {
 
     @FXML
     public void savePageObject(){
-        // TODO: 26.11.2021 make it prettier 
-        if(languangeChoiceBox.getValue().equals(Languange.JAVA)) {
-            pageObjectClass = new JavaPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
-            fileExtention = "java";
-        } else if(languangeChoiceBox.getValue().equals(Languange.CSHARP)){
-            pageObjectClass = new CSharpPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
-            fileExtention = "cs";
-        } else if(languangeChoiceBox.getValue().equals(Languange.KOTLIN)){
-            pageObjectClass = new KotlinPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
-            fileExtention = "kt";
-        }
+        if(validatePageObjectForm()){
+            if(languangeChoiceBox.getValue().equals(Languange.JAVA)) {
+                pageObjectClass = new JavaPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+                fileExtention = "java";
+            } else if(languangeChoiceBox.getValue().equals(Languange.CSHARP)){
+                pageObjectClass = new CSharpPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+                fileExtention = "cs";
+            } else if(languangeChoiceBox.getValue().equals(Languange.KOTLIN)){
+                pageObjectClass = new KotlinPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+                fileExtention = "kt";
+            }
 
-        System.out.println(pageObjectClass.printClass());
-        pageObjectClass.setPageObjectElements(elementsList);
-        FileHandler.saveToFile(classNameInput.getText(), pageObjectClass.printClass(), fileExtention);
-        clearForm();
+            System.out.println(pageObjectClass.printClass());
+            pageObjectClass.setPageObjectElements(elementsList);
+            FileHandler.saveToFile(classNameInput.getText(), pageObjectClass.printClass(), fileExtention);
+            clearForm();
+        }
+    }
+
+    public boolean validatePageObjectElementForm(){
+        if(generateMethodCheckbox.isSelected()){
+            if(Validator.givenControlHasValue(webElementNameInput) && Validator.givenControlHasValue(elementTypeChoiceBox) && Validator.givenControlHasValue(locatorInput) && Validator.givenControlHasValue(elementLocatorTypeChoiceBox)){
+                return true;
+            } else {
+                // TODO: 29.11.2021 show pop up here
+                System.out.println("INFO: Some fields has no data");
+                return false;
+            }
+        } else {
+            if(Validator.givenControlHasValue(webElementNameInput) && Validator.givenControlHasValue(locatorInput) && Validator.givenControlHasValue(elementLocatorTypeChoiceBox)){
+                return true;
+            } else {
+                // TODO: 29.11.2021 show pop up here
+                System.out.println("INFO: Some fields has no data");
+                return false;
+            }
+        }
+    }
+
+    public boolean validatePageObjectForm(){
+        if(Validator.givenControlHasValue(classNameInput) && Validator.givenControlHasValue(urlInput) && Validator.givenControlHasValue(listOfElements) && Validator.givenControlHasValue(languangeChoiceBox)){
+            return true;
+        }
+        // TODO: 29.11.2021 show pop up here
+        System.out.println("INFO: Some fields has no data");
+        return false;
     }
 }
