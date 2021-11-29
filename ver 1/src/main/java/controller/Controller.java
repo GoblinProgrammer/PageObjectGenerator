@@ -4,6 +4,7 @@ import element.Element;
 import element.ElementType;
 import element.LocatorType;
 import file.FileHandler;
+import gui.PopUpWindow;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -130,35 +131,34 @@ public class Controller {
             pageObjectClass.setPageObjectElements(elementsList);
             FileHandler.saveToFile(classNameInput.getText(), pageObjectClass.printClass(), fileExtention);
             clearForm();
+
+            PopUpWindow.display("INFO: PageObject Generated successfully");
         }
     }
 
-    public boolean validatePageObjectElementForm(){
+    private boolean validatePageObjectElementForm(){
         if(generateMethodCheckbox.isSelected()){
             if(Validator.givenControlHasValue(webElementNameInput) && Validator.givenControlHasValue(elementTypeChoiceBox) && Validator.givenControlHasValue(locatorInput) && Validator.givenControlHasValue(elementLocatorTypeChoiceBox)){
                 return true;
             } else {
-                // TODO: 29.11.2021 show pop up here
-                System.out.println("INFO: Some fields has no data");
+                PopUpWindow.display("INFO: Some fields has no data");
                 return false;
             }
         } else {
             if(Validator.givenControlHasValue(webElementNameInput) && Validator.givenControlHasValue(locatorInput) && Validator.givenControlHasValue(elementLocatorTypeChoiceBox)){
                 return true;
             } else {
-                // TODO: 29.11.2021 show pop up here
-                System.out.println("INFO: Some fields has no data");
+                PopUpWindow.display("INFO: Some fields has no data");
                 return false;
             }
         }
     }
 
-    public boolean validatePageObjectForm(){
+    private boolean validatePageObjectForm(){
         if(Validator.givenControlHasValue(classNameInput) && Validator.givenControlHasValue(urlInput) && Validator.givenControlHasValue(listOfElements) && Validator.givenControlHasValue(languangeChoiceBox)){
             return true;
         }
-        // TODO: 29.11.2021 show pop up here
-        System.out.println("INFO: Some fields has no data");
+        PopUpWindow.display("INFO: Some fields has no data");
         return false;
     }
 }
