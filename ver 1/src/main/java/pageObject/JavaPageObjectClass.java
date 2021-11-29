@@ -30,7 +30,11 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
     @Override
     public String printConstructor(){
         String constructor;
-        constructor = "\tpublic " + className + "(){}\n\n";
+        constructor = "\tWebDriver driver;\n\n" +
+                "\tpublic " + className + "(WebDriver driver){\n" +
+                "\t\tthis.driver = driver;\n" +
+                "\t\tPageFactory.initElements(driver, this);\n" +
+                "\t}\n\n";
 
         return constructor;
     }
@@ -38,7 +42,7 @@ public class JavaPageObjectClass extends PageObjectClass implements IPageObjectC
     @Override
     public String printGet(){
         String get;
-        get = "\tpublic void get(WebDriver driver){\n" +
+        get = "\tpublic void get(){\n" +
                     "\t\tdriver.get(\"" + pageUrl + "\");\n" +
                 "\t}\n\n";
 
