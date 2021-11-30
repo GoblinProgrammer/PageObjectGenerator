@@ -4,12 +4,14 @@ import element.Element;
 import element.ElementType;
 import element.LocatorType;
 import file.FileHandler;
+import gui.FileDirectory;
 import gui.PopUpWindow;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import languange.Languange;
 import pageObject.*;
+import validation.Validator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +49,9 @@ public class Controller {
     private ChoiceBox languangeChoiceBox;
     @FXML
     private TextField classNameInput;
+
+    @FXML
+    private TextArea previewTextArea;
 
     private List<Element> elementsList;
 
@@ -129,7 +134,7 @@ public class Controller {
 
             System.out.println(pageObjectClass.printClass());
             pageObjectClass.setPageObjectElements(elementsList);
-            FileHandler.saveToFile(classNameInput.getText(), pageObjectClass.printClass(), fileExtention);
+            FileHandler.saveToFile(FileDirectory.getDirectory() + "\\" + classNameInput.getText(), pageObjectClass.printClass(), fileExtention);
             clearForm();
 
             PopUpWindow.display("INFO: PageObject Generated successfully");
