@@ -143,27 +143,13 @@ public class Controller {
 
     private boolean validatePageObjectElementForm(){
         if(generateMethodCheckbox.isSelected()){
-            if(Validator.givenControlHasValue(webElementNameInput) && Validator.givenControlHasValue(elementTypeChoiceBox) && Validator.givenControlHasValue(locatorInput) && Validator.givenControlHasValue(elementLocatorTypeChoiceBox)){
-                return true;
-            } else {
-                PopUpWindow.display("INFO: Some fields has no data");
-                return false;
-            }
+            return Validator.validateForm(webElementNameInput,elementTypeChoiceBox,locatorInput,elementLocatorTypeChoiceBox);
         } else {
-            if(Validator.givenControlHasValue(webElementNameInput) && Validator.givenControlHasValue(locatorInput) && Validator.givenControlHasValue(elementLocatorTypeChoiceBox)){
-                return true;
-            } else {
-                PopUpWindow.display("INFO: Some fields has no data");
-                return false;
-            }
+            return Validator.validateForm(webElementNameInput,locatorInput,elementLocatorTypeChoiceBox);
         }
     }
 
     private boolean validatePageObjectForm(){
-        if(Validator.givenControlHasValue(classNameInput) && Validator.givenControlHasValue(urlInput) && Validator.givenControlHasValue(listOfElements) && Validator.givenControlHasValue(languangeChoiceBox)){
-            return true;
-        }
-        PopUpWindow.display("INFO: Some fields has no data");
-        return false;
+        return Validator.validateForm(classNameInput,urlInput,listOfElements);
     }
 }
