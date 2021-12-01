@@ -1,13 +1,13 @@
 package element;
 
 public class Element {
-    private String locator;
-    private LocatorType locatorType;
-    private ElementType elementType;
-    private String name;
-    private boolean generateMethod;
+    private final String locator;
+    private final LocatorType locatorType;
+    private final String elementType;
+    private final String name;
+    private final boolean generateMethod;
 
-    public Element(LocatorType locatorType,String locator,String name,boolean generateMethod,ElementType elementType){
+    public Element(LocatorType locatorType,String locator,String name,boolean generateMethod,String elementType){
         this.locatorType = locatorType;
         this.locator = locator;
         this.name = name;
@@ -27,7 +27,7 @@ public class Element {
         return locatorType;
     }
 
-    public ElementType getElementType(){
+    public String getElementType(){
         return elementType;
     }
 

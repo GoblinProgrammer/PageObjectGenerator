@@ -35,6 +35,11 @@ public class Controller {
     @FXML
     private ChoiceBox elementTypeChoiceBox;
 
+    @FXML
+    private Label webElementTypeInputLabel;
+    @FXML
+    private TextField webElementTypeInput;
+
     //**Element Locator
     @FXML
     private TextField locatorInput;
@@ -66,8 +71,13 @@ public class Controller {
         elementLocatorTypeChoiceBox.setItems(FXCollections.observableArrayList(LocatorType.values()));
         languangeChoiceBox.setItems(FXCollections.observableArrayList(Arrays.asList(Languange.JAVA,Languange.CSHARP,Languange.KOTLIN)));
 
-        elementTypeChoiceBox.setVisible(false);
-        elementTypeChoiceBoxLabel.setVisible(false);
+        //languangeChoiceBox.setValue(Languange.JAVA);
+
+        elementTypeChoiceBox.setManaged(false);
+        elementTypeChoiceBoxLabel.setManaged(false);
+
+        webElementTypeInput.setManaged(false);
+        webElementTypeInputLabel.setManaged(false);
 
         elementsList = new ArrayList<>();
         loadElementsOnList();
@@ -75,17 +85,31 @@ public class Controller {
 
     @FXML
     private void showElementTypeChoiceBox(){
-        elementTypeChoiceBox.setVisible(generateMethodCheckbox.isSelected());
+        elementTypeChoiceBox.setManaged(generateMethodCheckbox.isSelected());
+        elementTypeChoiceBoxLabel.setManaged(generateMethodCheckbox.isSelected());
         elementTypeChoiceBoxLabel.setVisible(generateMethodCheckbox.isSelected());
+        if(!generateMethodCheckbox.isSelected()){
+            webElementTypeInput.setManaged(false);
+            webElementTypeInputLabel.setManaged(false);
+            webElementTypeInputLabel.setVisible(false);
+        }
     }
 
     @FXML
     private void addElementToList(){
         if(validatePageObjectElementForm()){
             LocatorType locatorType = (LocatorType) elementLocatorTypeChoiceBox.getValue();
-            elementsList.add(new Element(locatorType,locatorInput.getText(),webElementNameInput.getText(), generateMethodCheckbox.isSelected(), (ElementType) elementTypeChoiceBox.getValue()));
+            elementsList.add(new Element(locatorType,locatorInput.getText(),webElementNameInput.getText(), generateMethodCheckbox.isSelected(), getElementTypeFromForm()));
             clearElementForm();
             loadElementsOnList();
+            refreshPageObjectPreview();
+        }
+    }
+    private String getElementTypeFromForm(){
+        if(!isElementTypeEqualsOther()){
+            return elementTypeChoiceBox.getValue().toString();
+        } else {
+            return webElementTypeInput.getText();
         }
     }
 
@@ -102,6 +126,7 @@ public class Controller {
     private void clearElementForm(){
         webElementNameInput.clear();
         locatorInput.clear();
+        webElementTypeInput.clear();
         generateMethodCheckbox.setSelected(false);
         elementTypeChoiceBox.setValue(null);
         elementLocatorTypeChoiceBox.setValue(null);
@@ -114,26 +139,13 @@ public class Controller {
         classNameInput.clear();
         urlInput.clear();
         elementsList = new ArrayList<>();
-        languangeChoiceBox.setValue(null);
         loadElementsOnList();
     }
 
     @FXML
     public void savePageObject(){
         if(validatePageObjectForm()){
-            if(languangeChoiceBox.getValue().equals(Languange.JAVA)) {
-                pageObjectClass = new JavaPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
-                fileExtention = "java";
-            } else if(languangeChoiceBox.getValue().equals(Languange.CSHARP)){
-                pageObjectClass = new CSharpPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
-                fileExtention = "cs";
-            } else if(languangeChoiceBox.getValue().equals(Languange.KOTLIN)){
-                pageObjectClass = new KotlinPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
-                fileExtention = "kt";
-            }
-
-            System.out.println(pageObjectClass.printClass());
-            pageObjectClass.setPageObjectElements(elementsList);
+            updatePageObjectClass();
             FileHandler.saveToFile(FileDirectory.getDirectory() + "\\" + classNameInput.getText(), pageObjectClass.printClass(), fileExtention);
             clearForm();
 
@@ -151,5 +163,38 @@ public class Controller {
 
     private boolean validatePageObjectForm(){
         return Validator.validateForm(classNameInput,urlInput,listOfElements);
+    }
+
+    public void updatePageObjectClass(){
+        if(languangeChoiceBox.getValue().equals(Languange.JAVA)) {
+            pageObjectClass = new JavaPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+            fileExtention = "java";
+        } else if(languangeChoiceBox.getValue().equals(Languange.CSHARP)){
+            pageObjectClass = new CSharpPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+            fileExtention = "cs";
+        } else if(languangeChoiceBox.getValue().equals(Languange.KOTLIN)){
+            pageObjectClass = new KotlinPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+            fileExtention = "kt";
+        }
+
+        pageObjectClass.setPageObjectElements(elementsList);
+    }
+
+    @FXML
+    public void refreshPageObjectPreview(){
+        updatePageObjectClass();
+        previewTextArea.setText(pageObjectClass.printClass());
+    }
+
+    @FXML
+    public void showOtherInput(){
+        if(elementTypeChoiceBox.getValue() != null){
+            webElementTypeInputLabel.setManaged(isElementTypeEqualsOther());
+            webElementTypeInputLabel.setVisible(isElementTypeEqualsOther());
+            webElementTypeInput.setManaged(isElementTypeEqualsOther());
+        }
+    }
+    private boolean isElementTypeEqualsOther(){
+        return elementTypeChoiceBox.getValue().equals(ElementType.Other);
     }
 }

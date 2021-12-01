@@ -9,36 +9,46 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 
+<?import javafx.scene.control.TextArea?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="controller.Controller"
           hgap="10" vgap="10"
           alignment="CENTER">
 
-    <GridPane hgap="10" vgap="10" GridPane.columnIndex="0">
-        <GridPane hgap="10" vgap="10" GridPane.rowIndex="0">
+    <GridPane hgap="10" vgap="10" GridPane.columnIndex="0" alignment="TOP_RIGHT">
+
+        <GridPane hgap="10" vgap="10" GridPane.rowIndex="0" alignment="TOP_RIGHT">
             <GridPane hgap="10" vgap="10" GridPane.rowIndex="0">
-                <Label text="Class name:" GridPane.columnIndex="0"/>
-                <TextField fx:id="classNameInput" GridPane.columnIndex="1"/>
+                <Label text="Choose languange" GridPane.columnIndex="0"/>
+                <ChoiceBox fx:id="languangeChoiceBox" GridPane.columnIndex="1" onAction="#refreshPageObjectPreview"/>
             </GridPane>
+
             <GridPane hgap="10" vgap="10" GridPane.rowIndex="1">
+                <Label text="Class name:" GridPane.columnIndex="0"/>
+                <TextField fx:id="classNameInput" GridPane.columnIndex="1" onKeyTyped="#refreshPageObjectPreview"/>
+            </GridPane>
+            <GridPane hgap="10" vgap="10" GridPane.rowIndex="2">
                 <Label text="Url:"
                        GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <TextField
-                        fx:id="urlInput" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        fx:id="urlInput" GridPane.columnIndex="1" GridPane.rowIndex="0" onKeyTyped="#refreshPageObjectPreview"/>
             </GridPane>
         </GridPane>
 
         <!-- ElementDescription -->
-        <GridPane hgap="10" vgap="10" GridPane.rowIndex="1">
+        <GridPane hgap="10" vgap="10" GridPane.rowIndex="1" alignment="TOP_RIGHT">
             <Label text="WebElement name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="webElementNameInput"
-                GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <TextField fx:id="webElementNameInput" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
             <Label text="Generate Methods" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             <CheckBox fx:id="generateMethodCheckbox" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#showElementTypeChoiceBox"/>
-            <Label fx:id="elementTypeChoiceBoxLabel" text="Select Element Type"
-                   GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <ChoiceBox fx:id="elementTypeChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <Label fx:id="elementTypeChoiceBoxLabel" text="Select Element Type" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <ChoiceBox fx:id="elementTypeChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="2" onAction="#showOtherInput"/>
+
+            <Label fx:id="webElementTypeInputLabel" text="WebElement type:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <TextField fx:id="webElementTypeInput" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
         </GridPane>
 
         <!-- ElementLocator -->
@@ -51,17 +61,18 @@
 
             <Button fx:id="addElementToListButton" GridPane.columnIndex="1" GridPane.rowIndex="5" text="Add element" onAction="#addElementToList"/>
         </GridPane>
+
+        <Button fx:id="saveButton" GridPane.columnIndex="0" GridPane.rowIndex="3" text="Save" onAction="#savePageObject" alignment="TOP_RIGHT"/>
     </GridPane>
 
-    <GridPane hgap="10" vgap="10" GridPane.columnIndex="1">
+    <GridPane hgap="10" vgap="10" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
         <!-- ListOfElements-->
         <Label text="Already added elements " GridPane.rowIndex="0"/>
-        <ListView fx:id="listOfElements" GridPane.rowIndex="1"/>
-        <GridPane hgap="10" vgap="10" GridPane.rowIndex="2">
-            <Label text="Choose languange" GridPane.columnIndex="0"/>
-            <ChoiceBox fx:id="languangeChoiceBox" GridPane.columnIndex="1"/>
-        </GridPane>
-        <Button fx:id="saveButton" GridPane.columnIndex="0" GridPane.rowIndex="4" text="Save" onAction="#savePageObject"/>
+        <ListView fx:id="listOfElements" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
+    </GridPane>
+
+    <GridPane hgap="10" vgap="10" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+        <TextArea fx:id="previewTextArea" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" editable="false"/>
     </GridPane>
 
 </GridPane>

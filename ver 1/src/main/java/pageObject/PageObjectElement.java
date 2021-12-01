@@ -7,7 +7,7 @@ public abstract class PageObjectElement implements IPageObjectElement{
     String elementName;
     String locator;
     LocatorType locatorType;
-    ElementType elementType;
+    String elementType;
     boolean generateMethod;
 
     String elementLocatorName;
@@ -16,7 +16,7 @@ public abstract class PageObjectElement implements IPageObjectElement{
     String elementFindBy;
     String elementHandleMethod;
 
-    public PageObjectElement(String elementName, String locator, LocatorType locatorType, ElementType elementType, boolean generateMethod){
+    public PageObjectElement(String elementName, String locator, LocatorType locatorType, String elementType, boolean generateMethod){
         this.elementName = elementName;
         this.locator = locator;
         this.locatorType = locatorType;
