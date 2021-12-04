@@ -6,6 +6,10 @@ import element.LocatorType;
 import file.FileHandler;
 import gui.FileDirectory;
 import gui.PopUpWindow;
+import helperClass.HelperClassCSharp;
+import helperClass.HelperClassFactory;
+import helperClass.HelperClassJava;
+import helperClass.HelperClassKotlin;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -47,6 +51,9 @@ public class Controller {
     @FXML
     private ChoiceBox elementLocatorTypeChoiceBox;
 
+    @FXML
+    private CheckBox generateHelperClassCheckbox;
+
     //**List Of elements
     @FXML
     private ListView listOfElements;
@@ -59,8 +66,10 @@ public class Controller {
     private TextArea previewTextArea;
 
     private List<Element> elementsList;
+    private List<String> otherElementTypes;
 
     private IPageObjectClass pageObjectClass;
+    private HelperClassFactory helperClass;
     private String fileExtention;
 
     public Controller(){ }
@@ -80,16 +89,19 @@ public class Controller {
         webElementTypeInputLabel.setManaged(false);
 
         elementsList = new ArrayList<>();
+        otherElementTypes = new ArrayList<>();
         loadElementsOnList();
     }
 
     @FXML
     private void showElementTypeChoiceBox(){
         elementTypeChoiceBox.setManaged(generateMethodCheckbox.isSelected());
+        elementTypeChoiceBox.setVisible(generateMethodCheckbox.isSelected());
         elementTypeChoiceBoxLabel.setManaged(generateMethodCheckbox.isSelected());
         elementTypeChoiceBoxLabel.setVisible(generateMethodCheckbox.isSelected());
         if(!generateMethodCheckbox.isSelected()){
             webElementTypeInput.setManaged(false);
+            webElementTypeInput.setVisible(false);
             webElementTypeInputLabel.setManaged(false);
             webElementTypeInputLabel.setVisible(false);
         }
@@ -100,6 +112,9 @@ public class Controller {
         if(validatePageObjectElementForm()){
             LocatorType locatorType = (LocatorType) elementLocatorTypeChoiceBox.getValue();
             elementsList.add(new Element(locatorType,locatorInput.getText(),webElementNameInput.getText(), generateMethodCheckbox.isSelected(), getElementTypeFromForm()));
+            if(elementTypeChoiceBox.getValue().equals(ElementType.Other)){
+                otherElementTypes.add(webElementTypeInput.getText());
+            }
             clearElementForm();
             loadElementsOnList();
             refreshPageObjectPreview();
@@ -139,14 +154,20 @@ public class Controller {
         classNameInput.clear();
         urlInput.clear();
         elementsList = new ArrayList<>();
+        generateHelperClassCheckbox.setSelected(false);
         loadElementsOnList();
     }
 
     @FXML
     public void savePageObject(){
+        String directory;
         if(validatePageObjectForm()){
             updatePageObjectClass();
-            FileHandler.saveToFile(FileDirectory.getDirectory() + "\\" + classNameInput.getText(), pageObjectClass.printClass(), fileExtention);
+            directory = FileDirectory.getDirectory();
+            FileHandler.saveToFile( directory + "\\" + classNameInput.getText(), pageObjectClass.printClass(), fileExtention);
+            if(generateHelperClassCheckbox.isSelected()){
+                FileHandler.saveToFile(directory + "\\" + "SeleniumHelper", helperClass.printClass(),fileExtention);
+            }
             clearForm();
 
             PopUpWindow.display("INFO: PageObject Generated successfully");
@@ -168,12 +189,15 @@ public class Controller {
     public void updatePageObjectClass(){
         if(languangeChoiceBox.getValue().equals(Languange.JAVA)) {
             pageObjectClass = new JavaPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+            helperClass = new HelperClassJava(otherElementTypes);
             fileExtention = "java";
         } else if(languangeChoiceBox.getValue().equals(Languange.CSHARP)){
             pageObjectClass = new CSharpPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+            helperClass = new HelperClassCSharp(otherElementTypes);
             fileExtention = "cs";
         } else if(languangeChoiceBox.getValue().equals(Languange.KOTLIN)){
             pageObjectClass = new KotlinPageObjectClass(classNameInput.getText(),urlInput.getText(),elementsList);
+            helperClass = new HelperClassKotlin(otherElementTypes);
             fileExtention = "kt";
         }
 
@@ -192,9 +216,16 @@ public class Controller {
             webElementTypeInputLabel.setManaged(isElementTypeEqualsOther());
             webElementTypeInputLabel.setVisible(isElementTypeEqualsOther());
             webElementTypeInput.setManaged(isElementTypeEqualsOther());
+            webElementTypeInput.setVisible(isElementTypeEqualsOther());
         }
     }
     private boolean isElementTypeEqualsOther(){
         return elementTypeChoiceBox.getValue().equals(ElementType.Other);
+    }
+
+    private void generateHelperClass(boolean generate){
+        if(generate){
+
+        }
     }
 }
